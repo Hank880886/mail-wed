@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>maill.twdevs.com - 電子郵件服務</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container" id="app">
+        <!-- 登入頁面 -->
+        <div class="login-page" id="loginPage">
+            <div class="login-box">
+                <div class="logo">
+                    <i class="fas fa-envelope"></i>
+                    <h1>maill.twdevs.com</h1>
+                </div>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="email">電子郵件</label>
+                        <input type="email" id="email" placeholder="username@twdevs.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">密碼</label>
+                        <input type="password" id="password" required>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> 登入
+                    </button>
+                    
+                    <div class="links">
+                        <a href="#" id="showRegister">註冊新帳號</a>
+                        <a href="#">忘記密碼？</a>
+                    </div>
+                </form>
+                
+                <form id="registerForm" style="display: none;">
+                    <div class="form-group">
+                        <label for="regEmail">電子郵件</label>
+                        <input type="email" id="regEmail" placeholder="username@twdevs.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="regPassword">密碼</label>
+                        <input type="password" id="regPassword" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="regDisplayName">顯示名稱（選填）</label>
+                        <input type="text" id="regDisplayName">
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-user-plus"></i> 註冊
+                    </button>
+                    
+                    <div class="links">
+                        <a href="#" id="showLogin">返回登入</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- 郵件客戶端主界面 -->
+        <div class="mail-client" id="mailClient" style="display: none;">
+            <!-- 頂部導航欄 -->
+            <header class="header">
+                <div class="header-left">
+                    <button class="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="logo">
+                        <i class="fas fa-envelope"></i>
+                        <span>maill.twdevs.com</span>
+                    </div>
+                </div>
+                
+                <div class="search-bar">
+                    <input type="text" placeholder="搜尋郵件..." id="searchInput">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                
+                <div class="header-right">
+                    <div class="user-info" id="userInfo">
+                        <span id="userEmail"></span>
+                        <button id="logoutBtn" class="btn-logout">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="main-content">
+                <!-- 側邊欄 -->
+                <aside class="sidebar">
+                    <button class="compose-btn" id="composeBtn">
+                        <i class="fas fa-edit"></i> 撰寫郵件
+                    </button>
+                    
+                    <nav class="menu">
+                        <a href="#" class="menu-item active" data-folder="inbox">
+                            <i class="fas fa-inbox"></i> 收件箱 <span class="badge" id="inboxCount">0</span>
+                        </a>
+                        <a href="#" class="menu-item" data-folder="sent">
+                            <i class="fas fa-paper-plane"></i> 已發送
+                        </a>
+                        <a href="#" class="menu-item" data-folder="drafts">
+                            <i class="fas fa-file-alt"></i> 草稿
+                        </a>
+                        <a href="#" class="menu-item" data-folder="starred">
+                            <i class="fas fa-star"></i> 星號郵件
+                        </a>
+                        <a href="#" class="menu-item" data-folder="trash">
+                            <i class="fas fa-trash"></i> 垃圾筒
+                        </a>
+                    </nav>
+                    
+                    <div class="labels">
+                        <h3>標籤</h3>
+                        <div class="label-item">
+                            <span class="label-color" style="background-color: #4285f4;"></span>
+                            <span>工作</span>
+                        </div>
+                        <div class="label-item">
+                            <span class="label-color" style="background-color: #34a853;"></span>
+                            <span>個人</span>
+                        </div>
+                        <div class="label-item">
+                            <span class="label-color" style="background-color: #fbbc04;"></span>
+                            <span>重要</span>
+                        </div>
+                    </div>
+                </aside>
+                
+                <!-- 郵件列表區域 -->
+                <main class="mail-content">
+                    <div class="mail-toolbar">
+                        <div class="toolbar-left">
+                            <button class="toolbar-btn" id="refreshBtn">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                            <button class="toolbar-btn">
+                                <i class="fas fa-archive"></i>
+                            </button>
+                            <button class="toolbar-btn">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            <button class="toolbar-btn">
+                                <i class="fas fa-envelope"></i>
+                            </button>
+                        </div>
+                        <div class="toolbar-right">
+                            <span id="mailCount">0 封郵件</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mail-list" id="mailList">
+                        <!-- 郵件列表會動態載入 -->
+                        <div class="empty-state">
+                            <i class="fas fa-inbox fa-3x"></i>
+                            <h3>收件箱空空如也</h3>
+                            <p>點擊「撰寫郵件」開始發送第一封郵件</p>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+        
+        <!-- 撰寫郵件模態框 -->
+        <div class="modal" id="composeModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>撰寫新郵件</h3>
+                    <button class="close-btn" id="closeCompose">&times;</button>
+                </div>
+                <form id="composeForm">
+                    <div class="form-group">
+                        <input type="email" id="composeTo" placeholder="收件人" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="composeSubject" placeholder="主旨" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="composeBody" placeholder="輸入郵件內容..." rows="10"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn-secondary">
+                            <i class="fas fa-paperclip"></i> 添加附件
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-paper-plane"></i> 傳送
+                        </button>
+                        <button type="button" class="btn-secondary" id="saveDraftBtn">
+                            <i class="fas fa-save"></i> 儲存草稿
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
