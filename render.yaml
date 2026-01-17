@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: mail-wed
+    env: node
+    region: oregon
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+    plan: free
+    autoDeploy: true
