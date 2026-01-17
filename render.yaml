@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: mail-wed
+    name: mail-wed-simple
     env: node
     region: oregon
     buildCommand: npm install
